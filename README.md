@@ -1,38 +1,44 @@
-<h1>Static page template</h1>
-<p>Use for Bite-software plugin-dev deployment</p>
-<p>Insert $vars into setup.php for basic site generation</p>
-<p><i>dont forget to re-initialise git repro..</i></p>
-<h2>Features:</h2>
-<ul>
-	<li>Disqus comments</li>
-	<li>Code syntax highlighting</li>
-	<li>Google analytics</li>
-	<li>Custom fonts</li>
-</ul>
-
-PLUGIN
+NEBULA
 ======
 
-<a href='http://bite-software.co.uk/offreg'>Plugin Site</a>
+Generating a multi-layered composite of CSS radial-gradients - resembling thw awesomness of deep space.
+Currently Stars are not included in this version
+
+<a href='http://bite-software.co.uk/nebula'>Plugin Site</a>
 
 BASIC USAGE:
 ```javascript
-$('.element').plugin(
-	source,
-	variables,
-	options
-);
+$('.element').plugin({
+	color1,
+	color2,
+	density,
+	stars,
+	smoke,
+	mixture
+});
 ```
 <h1>config options:</h1>
 
-| Option             | data type      | values               | Required | Nb.                								  | 
-| ------------------ |----------------|----------------------|----------|-----------------------------------------------------|
-| source  			 | string         | 'img/image.jpg'      | Yes      | any img type     									  |       
-| transparent        | boolean        | true / false         | Yes      |                									  |        
-| rotation 			 | float          | 0.0 -> 1.0  	     | Yes      | rotation offset strength      					  |        
-| offset 			 | float          | 0.0 -> 1.0   	     | No       | x/y axis offset strength    					      |        
+| Option             | data type      | values               | Required | Nb.      								  | 
+| ------------------ |----------------|----------------------|----------|-----------------------------------------|
+| colour1  			 | array (rgb)    | [227,192,128] 	     | Yes      |      									  |       
+| colour2	         | array (rgb)    | [10,150,200]         | Yes      |     									  |        
+| density 			 | int            | 1 -> 100 	 	     | No       | number of generations					  |        
+| smoke				 | float          | 0.0 -> 1.0   	     | No       | opacity of smoke    				      |
+| mixture			 | float          | 0.0 -> 1.0   	     | No       | sensitivity for overlaying of colours   |
+| stars				 | int	          | 0	-> 1000   	     | No       | generates a subtle starfield on the BG  |        
+
+
+Dont forget to set the default 'body' CSS background-color property!
 
 <h1>usage example</h1>
 ```javascript
-$('.container').offset(img,true,0.7);
+$('body').nebula({
+	color1:[227,192,128],
+	color2:[80,20,10],
+	stars:false,
+	density:30,
+	smoke:.8,
+	mixture:.9
+});
 ```
