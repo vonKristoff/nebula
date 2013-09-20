@@ -18,10 +18,10 @@ $.fn.nebula = function(options){
 	window.onresize = function(){
 		process.resize()
 	}
-			
+	
 	return this.el;	
 }
-
+    
 var Plugin = function(me,options){
 
 	this.config = {
@@ -29,7 +29,8 @@ var Plugin = function(me,options){
 		smoke:.875,
 		color1: [227,192,128],//[100,180,190,.95]
 		color2: [80,20,10],//[80,50,230,.02],
-		density: 20 
+		density: 15,
+		browser:this.browser() 
 	}
 	var smoke = (1 - this.config.smoke)/10;
 
@@ -49,9 +50,9 @@ var Plugin = function(me,options){
 Plugin.prototype.init = function(){
 
 	var RadialGradient = this.buildLayers();
-
+	console.log(RadialGradient);
 	this.el.css({
-		'background-image': RadialGradient
+		'background': RadialGradient
 	})
 }
 
@@ -102,21 +103,47 @@ Plugin.prototype.colorMix = function(rgb){
 }
 Plugin.prototype.gradientString = function(obj){
 
+	var b = this.config.browser;
+
 	var c1 = [obj.c1],
 		c2 = [obj.c2];
 
-	var str = '-webkit-radial-gradient( ';
+	var str = this.prefixer();
+
+	str += '-radial-gradient( '; 
 
 	str += obj.x + '% ';
 	str += obj.y + '%,';
-	str += obj.dx + '% ';
-	str += obj.dy + '%,';
-	str += 'rgba(' + c1.join() + ') 10%,';
-	str += 'rgba(' + c2.join() + ') 70%';
+	if(b === 'Chrome' || b === 'Safari'){
+		str += obj.dx + '% ';
+		str += obj.dy + '%,';	
+	}else{
+		str += 'circle,'
+	}
+	if(b === 'Chrome' || b === 'Safari'){
+		str += 'rgba(' + c1.join() + ') 10%,';
+		str += 'rgba(' + c2.join() + ') 75%';	
+	}else{
+		str += 'rgba(' + c1.join() + ') 20%,';
+		str += 'rgba(' + c2.join() + ') 60%';
+	}
+	
 
 	str += ' )';
 
 	return str;
+}
+Plugin.prototype.prefixer = function(){
+
+	var b = this.config.browser,
+		pfx;
+
+	if(b === 'Chrome' || b === 'Safari')pfx = '-webkit';
+	else if(b === 'Mozilla')pfx = '-moz';
+	else if(b === 'Opera')pfx = '-o';
+	else if(b === 'IE')pfx = '-msie';
+	
+	return pfx;
 }
 Plugin.prototype.ratiolise = function(){
 
@@ -248,5 +275,38 @@ Plugin.prototype.hue2rgb = function(m1, m2, hue) {
 
 	return 255 * v;
 };
+Plugin.prototype.browser = function() {
+
+	var b = window.browser;
+	for(var i=0;i<Object.keys(window.browser).length;i++){
+		
+		if(b.chrome) return 'Chrome' 
+		else if (b.safari) return 'Safari'
+		else if (b.opera) return 'Opera'
+		else if (b.mozilla) return 'Mozilla'
+		else if (b.msie) return 'IE'
+	}
+}
+window.browser = {
+    chrome: false,
+    mozilla: false,
+    opera: false,
+    msie: false,
+    safari: false
+};	
+var sUsrAg = navigator.userAgent;
+
+if(sUsrAg.indexOf("Chrome") > -1) {
+    window.browser.chrome = true;
+} else if (sUsrAg.indexOf("Safari") > -1) {
+    window.browser.safari = true;
+} else if (sUsrAg.indexOf("Opera") > -1) {
+    window.browser.opera = true;
+} else if (sUsrAg.indexOf("Firefox") > -1) {
+    window.browser.mozilla = true;
+} else if (sUsrAg.indexOf("MSIE") > -1) {
+    window.browser.msie = true;
+}
 
 })(jQuery);
+
