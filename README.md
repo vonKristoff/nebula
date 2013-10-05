@@ -1,7 +1,7 @@
 NEBULA
 ======
 
-Generating a multi-layered composite of CSS radial-gradients - resembling thw awesomness of deep space.
+Generating a multi-layered composite of CSS radial-gradients - resembling the awesomness of deep space.
 Currently Stars are not included in this version
 
 <a href='http://bite-software.co.uk/nebula'>Plugin Site</a>
@@ -28,6 +28,12 @@ $('.element').plugin({
 | mixture			 | float          | 0.0 -> 1.0   	     | No       | sensitivity for overlaying of colours   |
 | stars				 | int	          | 0	-> 1000   	     | No       | generates a subtle starfield on the BG  |        
 
+
+<h1>HTML setup</h1>
+```html
+<body></body>
+```
+Easy for a background. Or try it on a div tag ..
 
 Dont forget to set the default 'body' CSS background-color property!
 
